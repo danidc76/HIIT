@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>HIIT en casa</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HIIT">
+<meta name="theme-color" content="#e8590c">
+<style>
+:root{box-sizing:border-box;--bg:#f6f5f1;--card:#fff;--tx:#1b1b1b;--mu:#6b6b66;--ac:#e8590c;--ln:#e3e1da;--fig:#1b1b1b;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1d1d1d;--tx:#f2f2ee;--mu:#9a9a94;--ln:#2e2e2b;--fig:#f2f2ee}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;margin-inline:auto;padding:16px}
+h1{font-size:22px;margin:4px 0 12px}
+.tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
+.tab{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 0;text-align:center;font-size:13px;color:var(--mu);cursor:pointer;font-family:inherit}
+.tab b{display:block;font-size:15px;color:var(--tx)}
+.tab.on{background:var(--ac);border-color:var(--ac);color:#fff}.tab.on b{color:#fff}
+.tab.done::after{content:"✓";display:block;font-size:11px}
+.sub{color:var(--mu);font-size:14px;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:12px;margin-bottom:12px;display:flex;gap:12px;align-items:center}
+.card svg{width:110px;height:110px;flex:none;background:var(--bg);border-radius:12px}
+.card h3{margin:0 0 4px;font-size:16px}.card p{margin:0;font-size:13px;color:var(--mu);line-height:1.4}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:600;background:var(--ac);color:#fff;margin:8px 0;cursor:pointer;font-family:inherit}
+.btn.alt{background:var(--card);color:var(--tx);border:1px solid var(--ln)}
+.note{font-size:13px;color:var(--mu);line-height:1.5;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+#ov{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;z-index:9}
+#ov.on{display:flex}
+#ov svg{width:min(70vw,300px);height:min(70vw,300px);background:var(--card);border-radius:20px}
+#ph{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);font-weight:700}
+#tm{font-size:72px;font-weight:800;line-height:1.1}
+#nm{font-size:22px;font-weight:700;margin:4px 0}#nx{color:var(--mu);font-size:14px;margin-bottom:14px}
+#ov .btn{max-width:300px}
+.card{cursor:pointer}.card h3{margin-bottom:2px}.card p{margin:2px 0}
+.tg{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}.tg span{background:var(--ac);color:#fff;border-radius:99px;padding:3px 9px;font-size:11px}
+.card .tg span{background:var(--bg);color:var(--mu);border:1px solid var(--ln)}
+#md{position:fixed;inset:0;background:var(--bg);display:none;overflow:auto;z-index:8;padding:16px;padding-top:calc(16px + env(safe-area-inset-top,0px))}#md.on{display:block}
+.mc{max-width:560px;margin:auto}.mc h2{margin:8px 0}.mc p{line-height:1.5}.mc svg{width:100%;max-width:420px;height:auto;aspect-ratio:1;display:block;margin:8px auto;background:var(--card);border-radius:20px}
+.x{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:12px;padding:10px 14px;font-size:15px;font-family:inherit;cursor:pointer}
+#ov.p1{background:#e8590c;color:#fff}#ov.p4{background:#0b7285;color:#fff}
+.tab{padding:8px 0}.tab.hit{border-color:var(--ac)}.tab.td{outline:2px solid var(--tx);outline-offset:-2px}.tab.off{opacity:.4}
+.note ol{margin:6px 0 0;padding-left:18px}.note li{margin-bottom:6px}
+.tab.done{background:#2f9e44;border-color:#2f9e44;color:#fff}.tab.done b{color:#fff}.tab.on.done{outline:3px solid var(--ac);outline-offset:-3px}.wk{flex:none;min-width:68px}#ov.p0,#ov.p3{background:#1971c2;color:#fff}#ov.p2{background:#2f9e44;color:#fff}
+#ov #ph,#ov #nx,#ov #rp{color:#fff}#rp{font-size:14px;opacity:.9;margin-bottom:4px}
+#bw{width:min(80vw,300px);height:8px;background:rgba(255,255,255,.3);border-radius:9px;margin:6px 0 10px;overflow:hidden}#bb{height:100%;background:#fff;width:0}
+</style>
+</head>
+<body>
+<h1>HIIT en casa</h1>
+<div class="tabs" id="tabs"></div>
+<div id="day"></div>
+<div id="md"></div>
+<div id="ov">
+<div id="ph"></div><div id="tm"></div><div id="bw"><div id="bb"></div></div><div id="nm"></div><div id="rp"></div><div id="nx"></div>
+<div id="big"></div>
+<button class="btn alt" id="pause">Pausa</button>
+<button class="btn alt" id="skip">Saltar</button>
+<button class="btn alt" id="close">Salir</button>
+</div>
+<script>
+// Cada pose: cabeza, hombro, cadera, rodilla1, pie1, rodilla2, pie2, codo, mano (x,y)
+var E={
+goblet:{n:"Sentadilla goblet",kb:1,d:"Kettlebell pegada al pecho, espalda recta. Baja hasta muslos paralelos y sube empujando con los talones.",
+A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,55,38,58,33],B:[57,32,54,42,42,68,66,68,52,90,66,68,52,90,62,54,60,44]},
+swing:{n:"Swing con kettlebell",kb:1,d:"Bisagra de cadera: empuja la cadera atrás y lanza hacia delante con los glúteos, no con los brazos.",
+A:[60,36,52,40,30,52,40,68,40,90,40,68,40,90,50,56,46,68],B:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,62,26,74,26]},
+zancada:{n:"Zancada atrás alterna",d:"Da un paso atrás y baja la rodilla casi al suelo. Tronco erguido. Alterna piernas.",
+A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,44,38,50,50],B:[50,32,50,42,50,68,64,68,62,90,40,86,26,90,42,54,50,64]},
+salto:{n:"Sentadilla con salto",d:"Baja a sentadilla y salta explosivo. Aterriza suave, con rodillas flexionadas.",
+A:[50,0,50,10,50,36,50,58,50,76,50,58,50,76,56,2,58,-8],B:[59,32,56,42,40,68,64,68,50,90,64,68,50,90,46,56,38,64]},
+climbers:{n:"Mountain climbers",d:"En posición de plancha alta, lleva las rodillas al pecho rápido, alternando. Cadera baja.",
+A:[82,46,74,52,42,64,60,74,56,88,27,77,12,90,76,72,78,90],B:[82,46,74,52,42,64,27,77,12,90,60,74,56,88,76,72,78,90]},
+flexiones:{n:"Flexiones",d:"Cuerpo recto de cabeza a talones. Baja el pecho al suelo y empuja. Si cuesta, apoya las rodillas.",
+A:[82,46,74,52,42,64,27,77,12,90,27,77,12,90,76,72,78,90],B:[80,72,72,76,42,82,27,86,12,90,27,86,12,90,60,84,76,90]},
+remo:{n:"Remo con kettlebell",kb:1,d:"Torso inclinado, espalda recta. Tira del codo hacia la cadera. Haz todas las reps y cambia de brazo.",
+A:[68,34,60,38,36,52,42,70,44,90,42,70,44,90,62,56,62,72],B:[68,34,60,38,36,52,42,70,44,90,42,70,44,90,50,46,58,52]},
+plancha:{n:"Plancha",d:"Sobre antebrazos, cuerpo en línea recta. Aprieta abdomen y glúteos. Respira, no aguantes el aire.",
+A:[78,64,70,68,40,72,26,81,12,90,26,81,12,90,70,90,80,90],B:[78,64,70,68,40,69,26,80,12,90,26,80,12,90,70,90,80,90]},
+puente:{n:"Puente de glúteo",d:"Tumbado, pies apoyados. Sube la cadera apretando glúteos y baja controlado.",
+A:[12,86,22,86,42,86,62,64,66,90,62,64,66,90,34,88,46,90],B:[12,86,22,86,44,60,64,64,66,90,64,64,66,90,34,88,46,90]}
+};
+var M={goblet:['10-12 reps','Cuádriceps, Glúteos, Core'],swing:['15 reps','Glúteos, Isquiotibiales, Zona lumbar, Hombros'],zancada:['16-20 reps alternando','Cuádriceps, Glúteos, Isquiotibiales'],salto:['10-12 reps','Cuádriceps, Glúteos, Gemelos'],climbers:['30-40 reps','Core, Hombros, Flexores de cadera'],flexiones:['8-15 reps','Pecho, Tríceps, Hombros, Core'],remo:['8 reps por brazo (cambia a los 20 s)','Dorsal, Bíceps, Core'],plancha:['aguantar los 40 s','Core, Hombros, Glúteos'],puente:['15-20 reps','Glúteos, Isquiotibiales, Core']};
+var D=[
+{n:"Lun",t:"Piernas + cardio",x:["swing","goblet","zancada","salto","climbers"]},
+{n:"Mar",t:"Descanso",r:"Descanso. Camina 30-40 min si te apetece."},
+{n:"Mié",t:"Torso + core",x:["flexiones","remo","plancha","puente","climbers"]},
+{n:"Jue",t:"Descanso",r:"Descanso. Movilidad suave de cadera y tobillos 10 min."},
+{n:"Vie",t:"Cuerpo completo",x:["swing","goblet","flexiones","remo","salto"]},
+{n:"Sáb",t:"Montaña",r:"Montaña: sendero con desnivel, 2-4 h a ritmo cómodo. Es tu sesión de resistencia de la semana."},
+{n:"Dom",t:"Descanso",r:"Descanso total. Duerme y come bien."}
+];
+var order=[1,2,3,4,5,6,0],cur=(new Date().getDay()+6)%7,done={},figs=[];
+try{done=JSON.parse(localStorage.getItem("hiitdone")||"{}")}catch(e){}
+var wk=(function(){var d=new Date(),j=new Date(d.getFullYear(),0,1);return d.getFullYear()+"-"+Math.floor((d-j)/6048e5)})();
+function dk(i){return wk+"-"+i}
+function fig(id,k){var s='<svg viewBox="0 -12 100 110" id="'+id+'"><line x1="0" y1="92" x2="100" y2="92" stroke="var(--ln)" stroke-width="2"/><rect class="bx" x="56" y="74" width="32" height="18" rx="2" fill="var(--ln)" display="none"/><g stroke="var(--fig)" stroke-width="5" stroke-linecap="round" fill="none"><path class="l2" opacity=".45"/><path class="l1"/><path class="tr"/><path class="ar" stroke="var(--ac)"/><circle class="hd" r="6.5" fill="var(--fig)" stroke="none"/></g><circle class="kb" r="7" fill="var(--ac)" display="none"/></svg>';return s}
+function draw(svg,k,t){var e=E[k],a=e.A,b=e.B,p=[];for(var i=0;i<18;i++)p.push(a[i]+(b[i]-a[i])*t);
+var g=function(n){return svg.querySelector(n)};
+g(".hd").setAttribute("cx",p[0]);g(".hd").setAttribute("cy",p[1]);
+g(".tr").setAttribute("d","M"+p[2]+" "+p[3]+"L"+p[4]+" "+p[5]);
+g(".l1").setAttribute("d","M"+p[4]+" "+p[5]+"L"+p[6]+" "+p[7]+"L"+p[8]+" "+p[9]);
+g(".l2").setAttribute("d","M"+p[4]+" "+p[5]+"L"+p[10]+" "+p[11]+"L"+p[12]+" "+p[13]);
+g(".ar").setAttribute("d","M"+p[2]+" "+p[3]+"L"+p[14]+" "+p[15]+"L"+p[16]+" "+p[17]);
+var bx=g(".bx");if(bx)bx.setAttribute("display",e.bx?"":"none");var kb=g(".kb");if(e.kb){kb.setAttribute("display","");kb.setAttribute("cx",p[16]);kb.setAttribute("cy",p[17]+(k=="goblet"?0:5))}}
+function tick(ms){var t=(1-Math.cos(ms/1700*Math.PI*2))/2;figs.forEach(function(f){var s=document.getElementById(f.id);if(s)draw(s,f.k,t)});requestAnimationFrame(tick)}
+function render(){
+var tabs=document.getElementById("tabs");tabs.innerHTML="";
+D.forEach(function(d,i){var b=document.createElement("button");b.className="tab"+(i==cur?" on":"")+(done[dk(i)]?" done":"");b.innerHTML="<b>"+d.n+"</b>"+(d.x?"HIIT":"·");b.onclick=function(){cur=i;render()};tabs.appendChild(b)});
+var d=D[cur],h="<p class=\"sub\"><b>"+d.t+"</b>"+(d.x?" · 4 rondas · 40 s trabajo / 20 s descanso":"")+"</p>";figs=[];
+if(d.x){
+h+="<div class=\"note\">Calentamiento 5 min: rotaciones de cadera y hombros, 20 sentadillas lentas, 20 saltos suaves. Al acabar, estira 5 min.</div>";h+='<div class="note"><b>Músculos del día:</b> '+dm(d.x)+'<br><b>Formato:</b> 4 rondas × 5 ejercicios · 40 s trabajo / 20 s descanso entre ejercicios · 60 s entre rondas · unos 22 min + calentamiento y estiramiento</div>';
+d.x.forEach(function(k,j){var id="f"+j;figs.push({id:id,k:k});h+="<div class=\"card\">"+fig(id,k)+"<div><h3>"+(j+1)+". "+E[k].n+"</h3><p><b>40 s</b> · "+M[k][0]+"<br>Descanso 20 s</p><div class='tg'>"+tags(k)+"</div><p>Toca para ver en grande</p></div></div>"});
+h+="<button class=\"btn\" id=\"go\">Empezar sesión guiada</button><button class=\"btn alt\" id=\"ok\">"+(done[dk(cur)]?"Desmarcar como hecho":"Marcar como hecho")+"</button>"}
+else h+="<div class=\"note\">"+d.r+"</div>"+(cur==5?"<button class=\"btn alt\" id=\"ok\">"+(done[dk(cur)]?"Desmarcar como hecho":"Marcar como hecho")+"</button>":"");
+document.getElementById("day").innerHTML=h;
+var go=document.getElementById("go");if(go)go.onclick=start;
+var ok=document.getElementById("ok");if(ok)ok.onclick=function(){done[dk(cur)]=!done[dk(cur)];try{localStorage.setItem("hiitdone",JSON.stringify(done))}catch(e){}render()}}
+// Sesión guiada
+var seq=[],si=0,left=0,iv=null,paused=false,ac=null;
+function beep(f){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.value=.15;o.start();o.stop(ac.currentTime+.15)}catch(e){}}
+function start(){var x=D[cur].x;seq=[];for(var r=1;r<=4;r++)x.forEach(function(k,j){seq.push({k:k,w:1,r:r,l:40});if(!(r==4&&j==x.length-1))seq.push({k:x[(j+1)%x.length],w:0,r:r,l:20,nxt:1})});
+si=0;left=seq[0].l;paused=false;document.getElementById("pause").textContent="Pausa";document.getElementById("ov").className="on";show();clearInterval(iv);iv=setInterval(step,1000)}
+function show(){var s=seq[si],big=document.getElementById("big");
+document.getElementById("ph").textContent=s.w?"Trabajo · ronda "+s.r+"/4":"Descanso · prepárate";
+document.getElementById("nm").textContent=s.w?E[s.k].n:"Siguiente: "+E[s.k].n;
+var n=seq[si+1];document.getElementById("nx").textContent=s.w&&n?"Luego: "+(n.w?"":"descanso")+(n.w?E[n.k].n:""):"";
+document.getElementById("tm").textContent=left;
+big.innerHTML=fig("bf",s.k);figs=figs.filter(function(f){return f.id!="bf"});figs.push({id:"bf",k:s.k})}
+function step(){if(paused)return;left--;if(left<=3&&left>0)beep(660);
+if(left<=0){si++;if(si>=seq.length){beep(880);end(true);return}left=seq[si].l;beep(seq[si].w?880:440);show()}else document.getElementById("tm").textContent=left}
+function end(ok){clearInterval(iv);document.getElementById("ov").className="";figs=figs.filter(function(f){return f.id!="bf"});if(ok){done[dk(cur)]=true;try{localStorage.setItem("hiitdone",JSON.stringify(done))}catch(e){}}render()}
+function dm(x){var o=[];x.forEach(function(k){M[k][1].split(', ').forEach(function(m){if(o.indexOf(m)<0)o.push(m)})});return o.join(', ')}
+function tags(k){return M[k][1].split(', ').map(function(m){return '<span>'+m+'</span>'}).join('')}
+function op(k){var m=document.getElementById('md');figs.push({id:'mf',k:k});m.className='on';m.innerHTML='<div class="mc"><button class="x" onclick="cl()">✕ Cerrar</button><h2>'+E[k].n+'</h2>'+fig('mf',k)+'<div class="tg">'+tags(k)+'</div><p><b>Series:</b> 4 rondas · 40 s de trabajo ('+M[k][0]+') · 20 s de descanso</p><p>'+E[k].d+'</p></div>'}
+function cl(){var m=document.getElementById('md');m.className='';m.innerHTML='';figs=figs.filter(function(f){return f.id!='mf'})}
+document.getElementById('day').onclick=function(e){var c=e.target.closest('.card');if(!c)return;var s=c.querySelector('svg');var f=figs.filter(function(f){return f.id==s.id})[0];if(f)op(f.k)};
+var lock=null;
+function start(){var x=D[cur].x;seq=[{k:x[0],w:2,l:10,r:1,j:0}];for(var r=1;r<=4;r++)x.forEach(function(k,j){seq.push({k:k,w:1,r:r,j:j,l:40});if(j<x.length-1)seq.push({k:x[j+1],w:0,r:r,j:j+1,l:20});else if(r<4)seq.push({k:x[0],w:3,r:r+1,j:0,l:60})});si=0;left=seq[0].l;paused=false;document.getElementById('pause').textContent='Pausa';try{navigator.wakeLock.request('screen').then(function(l){lock=l}).catch(function(){})}catch(e){}show();clearInterval(iv);iv=setInterval(step,1000)}
+function show(){var s=seq[si],L=['DESCANSO','TRABAJO','PREPÁRATE','DESCANSO ENTRE RONDAS'],e=E[s.k],g=function(i){return document.getElementById(i)};g('ov').className='on p'+s.w;g('ph').textContent=L[s.w]+(s.w==1?' · ronda '+s.r+'/4 · ejercicio '+(s.j+1)+'/5':'');g('nm').textContent=(s.w==1?'':'Siguiente: ')+e.n;g('rp').textContent=s.w==1?M[s.k][0]+' · '+M[s.k][1]:(s.w==3?'Ronda '+s.r+' de 4. Respira y bebe agua.':'Colócate y respira');var n=seq[si+1];g('nx').textContent=s.w==1?(n?(n.w==3?'Luego descanso 60 s':'Luego descanso 20 s'):'¡Último ejercicio!'):'';g('tm').textContent=left;g('bb').style.width='0%';g('big').innerHTML=fig('bf',s.k);figs=figs.filter(function(f){return f.id!='bf'});figs.push({id:'bf',k:s.k})}
+function adv(){si++;if(si>=seq.length){beep(880);end(true);return}left=seq[si].l;beep(seq[si].w==1?880:440);try{navigator.vibrate(200)}catch(e){}show()}
+function step(){if(paused)return;left--;if(left<=3&&left>0)beep(660);if(left<=0)adv();else{document.getElementById('tm').textContent=left;document.getElementById('bb').style.width=(100-left/seq[si].l*100)+'%'}}
+function end(ok){clearInterval(iv);try{lock&&lock.release()}catch(e){}document.getElementById('ov').className='';figs=figs.filter(function(f){return f.id!='bf'});if(ok){done[dk(cur)]=true;try{localStorage.setItem('hiitdone',JSON.stringify(done))}catch(e){}}render()}
+document.getElementById('skip').onclick=adv;
+document.getElementById("pause").onclick=function(){paused=!paused;this.textContent=paused?"Continuar":"Pausa"};
+document.getElementById("close").onclick=function(){end(false)};
+var MN=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+var S={'Cuádriceps':['Cuádriceps de pie','Agarra el tobillo por detrás, rodillas juntas, cadera adelante. Cambia de pierna a los 20 s.'],'Glúteos':['Figura 4 tumbado','Tumbado, tobillo sobre la rodilla contraria y tira del muslo hacia ti. Cambia a los 20 s.'],'Isquiotibiales':['Isquios sentado','Sentado con una pierna estirada, inclínate desde la cadera con la espalda recta. Cambia a los 20 s.'],'Gemelos':['Gemelos en la pared','Manos en la pared, pierna de atrás estirada y talón en el suelo. Cambia a los 20 s.'],'Core':['Cobra suave','Boca abajo sobre los antebrazos, eleva el pecho sin forzar la espalda. Respira lento.'],'Pecho':['Pecho en el marco de la puerta','Antebrazo en el marco y gira el tronco alejándote. Cambia de lado a los 20 s.'],'Hombros':['Hombro cruzado','Lleva un brazo estirado cruzando el pecho y presiónalo con el otro. Cambia a los 20 s.'],'Dorsal':['Postura del niño','De rodillas, siéntate sobre los talones y estira los brazos al frente con el pecho hacia el suelo.'],'Tríceps':['Tríceps tras la cabeza','Codo arriba y mano a la espalda; empuja el codo con la otra mano. Cambia a los 20 s.'],'Bíceps':['Bíceps con brazo estirado','Palma contra una pared con el brazo estirado atrás y gira el cuerpo. Cambia a los 20 s.'],'Zona lumbar':['Rodillas al pecho','Tumbado boca arriba, abraza las rodillas y balancea suave.'],'Flexores de cadera':['Flexor de cadera en zancada','Rodilla trasera en el suelo y empuja la cadera adelante. Cambia a los 20 s.']};
+E.sent={n:'Sentadilla rápida',d:'Sentadilla sin salto a ritmo ágil: baja controlado y sube con fuerza. Alternativa de bajo impacto para las articulaciones.',A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,60,26,72,26],B:[57,32,54,42,42,68,66,68,52,90,66,68,52,90,66,42,78,42]};
+E.curl={n:'Curl de bíceps con kettlebell',kb:1,d:'Codos pegados al cuerpo. Sube la kettlebell sin balancear el tronco y baja lento. Cambia de brazo a mitad.',A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,52,38,52,52],B:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,52,40,58,28]};
+E.press={n:'Press de hombro con kettlebell',kb:1,d:'De pie con el abdomen firme. Empuja la kettlebell sobre la cabeza sin arquear la espalda. Cambia de brazo a mitad.',A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,54,38,56,26],B:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,53,14,52,0]};
+M.sent=['15 reps','Cuádriceps, Glúteos, Core'];M.curl=['10-12 reps por brazo (cambia a mitad)','Bíceps, Hombros'];M.press=['8 reps por brazo','Hombros, Tríceps, Core'];
+E.rdl1={n:'Peso muerto a una pierna',kb:1,d:'Apoyado en una pierna con la rodilla algo flexionada, lleva la cadera atrás y la otra pierna recta hacia atrás, espalda recta. Entrena equilibrio y estabilidad de tobillo y rodilla. Apóyate en una pared si lo necesitas.',A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,50,42,50,58],B:[84,44,76,47,50,48,50,68,50,90,30,50,14,52,76,62,76,76]};
+E.stepup={n:'Subida a escalón',bx:1,d:'Sube con una pierna a un escalón o silla firme empujando con el talón y baja controlado en 3 s. Es el mejor ejercicio para subidas y bajadas de montaña. Cambia de pierna a mitad.',A:[46,14,46,24,44,50,60,62,66,74,44,70,40,90,50,38,54,48],B:[64,-2,64,8,64,34,66,54,66,74,74,42,72,56,68,22,70,32]};
+E.gemelos={n:'Elevación de gemelos',d:'De pie, sube sobre las puntas lo más alto que puedas, aguanta 1 s y baja lento. Protege tobillos y Aquiles para la montaña. A una pierna cuando te resulte fácil.',A:[50,14,50,24,50,50,50,70,50,90,50,70,50,90,50,40,50,50],B:[50,10,50,20,50,46,50,66,52,86,50,66,52,86,50,36,50,46]};
+M.rdl1=['6-8 reps por pierna (cambia a mitad)','Isquiotibiales, Glúteos, Zona lumbar, Equilibrio'];M.stepup=['8 reps por pierna (cambia a mitad)','Cuádriceps, Glúteos, Gemelos, Equilibrio'];M.gemelos=['15-20 reps lentas','Gemelos, Tobillos'];
+var T={A1:['swing','goblet','stepup','rdl1','climbers'],A2:['goblet','J','zancada','rdl1','gemelos'],B1:['flexiones','remo','press','puente','plancha'],B2:['press','flexiones','remo','curl','plancha'],C1:['swing','stepup','flexiones','remo','plancha'],C2:['goblet','rdl1','press','zancada','climbers']};
+function mon(d){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-(x.getDay()+6)%7);return x}
+var st=null;try{st=localStorage.getItem('hiitstart')}catch(e){}
+var P0=mon(st?new Date(st):new Date());if(!st){try{localStorage.setItem('hiitstart',P0.toISOString())}catch(e){}}
+function wkn(d){return Math.round((mon(d)-P0)/6048e5)}
+function ph(w){if(w<2)return{r:3,w:30,s:30,f:'Adaptación'};if(w<4)return{r:3,w:40,s:20,f:'Base'};if(w<8)return{r:4,w:40,s:20,f:'Desarrollo'};return{r:4,w:45,s:15,f:'Intensificación'}}
+function plan(d){var w=wkn(d);if(w<0)return null;var i=(d.getDay()+6)%7,v=w%2?'2':'1',ty={0:['A','Piernas, potencia y equilibrio'],2:['B','Pecho, hombros y brazos + core'],4:['C','Cuerpo completo + estabilidad']}[i],p=ph(w);if(!ty)return{w:w,p:p,t:i==5?'Montaña':i==6?'Descanso':'Descanso activo',r:i==5?'Montaña: sendero con desnivel, 2-4 h a ritmo cómodo. Es tu sesión de resistencia de la semana. Practica bajar despacio con las rodillas flexionadas: es lo que más cuida las articulaciones.':i==6?'Descanso total. Duerme bien y come con proteína: aquí es donde se construye el músculo.':'Descanso activo: camina 30-45 min a paso ligero. Quema grasa sin castigar las articulaciones.'};return{w:w,p:p,t:ty[1],x:T[ty[0]+v].map(function(k){return k=='J'?(w<4?'sent':'salto'):k})}}
+var cd=new Date(),vm=new Date(cd.getFullYear(),cd.getMonth(),1),cfg=ph(0);
+function ds(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function mv(n){vm=new Date(vm.getFullYear(),vm.getMonth()+n,1);render()}
+function sd(t){cd=new Date(t);vm=new Date(cd.getFullYear(),cd.getMonth(),1);render()}
+function sk(x){return dm(x).split(', ').filter(function(m){return S[m]})}
+function meal(p){var t=p&&p.x;return '<div class="note"><b>🍽️ Qué comer hoy</b><ol><li><b>Desayuno:</b> yogur griego + plátano maduro (o tostada con huevo).</li><li><b>Media mañana:</b> 2 mandarinas o una manzana.</li><li><b>Comida:</b> crema de verduras + pasta con pollo o atún. Una ración de pasta = un puñado grande (unos 80 g en crudo), sin repetir plato.</li><li><b>Merienda:</b> manzana + yogur, o un puñado de frutos secos.</li><li><b>Cena:</b> espárragos o crema + tortilla de 2-3 huevos (o pescado si te animas).</li></ol>'+(t?'<b>Hoy entrenas:</b> come un plátano 1 hora antes y, al terminar, algo de proteína (yogur, huevos o atún).<br>':'')+'<b>Reglas simples:</b> 1) proteína en cada comida, 2) verdura al empezar comida y cena, 3) bebe agua, no refrescos ni zumos, 4) pasta sí, pero una ración.</div>'}
+var ws=Math.max(0,wkn(new Date()));
+function wd(n,i){var m=new Date(P0);m.setDate(m.getDate()+n*7+i);return m}
+function wdone(n){return [0,2,4].every(function(i){return done[ds(wd(n,i))]})}
+function wsel(n){ws=n;var t=ds(new Date()),c=wd(n,0);for(var i=0;i<7;i++){if(ds(wd(n,i))==t)c=wd(n,i)}cd=c;render()}
+function wkhtml(){var h='<div style="grid-column:1/-1;display:flex;gap:6px;overflow-x:auto;padding-bottom:4px">',n,i,d,p,tn=ds(new Date()),N=Math.max(12,ws+2),D7=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];for(n=0;n<N;n++)h+='<button class="tab wk'+(n==ws?' on':'')+(wdone(n)?' done':'')+'" onclick="wsel('+n+')"><b>Sem '+(n+1)+'</b>'+wd(n,0).getDate()+'-'+wd(n,6).getDate()+'</button>';h+='</div>';for(i=0;i<7;i++){d=wd(ws,i);p=plan(d);h+='<button class="tab'+(ds(d)==ds(cd)?' on':'')+(p&&p.x?' hit':'')+(done[ds(d)]?' done':'')+(ds(d)==tn?' td':'')+'" onclick="sd('+d.getTime()+')"><span style="font-size:11px">'+D7[i]+'</span><b>'+d.getDate()+'</b>'+(p&&p.x?'HIIT':i==5?'Montaña':'·')+'</button>'}setTimeout(function(){var e=document.querySelector('.wk.on');if(e){var q=e.parentNode;q.scrollLeft=e.offsetLeft-q.offsetLeft-q.clientWidth/2+e.offsetWidth/2}},0);return h}
+function okb(){return '<button class="btn alt" id="ok">'+(done[ds(cd)]?'Desmarcar como hecho':'Marcar como hecho')+'</button>'}
+function render(){var g=function(i){return document.getElementById(i)},n,d,k,p,o='',h='<div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:center"><button class="x" onclick="mv(-1)">‹</button><b>'+MN[vm.getMonth()]+' '+vm.getFullYear()+'</b><button class="x" onclick="mv(1)">›</button></div>',tn=ds(new Date());
+'LMXJVSD'.split('').forEach(function(c){h+='<div style="text-align:center;font-size:12px;color:var(--mu)">'+c+'</div>'});
+for(n=(new Date(vm.getFullYear(),vm.getMonth(),1).getDay()+6)%7;n>0;n--)h+='<div></div>';
+for(n=1;n<=new Date(vm.getFullYear(),vm.getMonth()+1,0).getDate();n++){d=new Date(vm.getFullYear(),vm.getMonth(),n);p=plan(d);k=ds(d);h+='<button class="tab'+(k==ds(cd)?' on':'')+(p&&p.x?' hit':'')+(done[k]?' done':'')+(k==tn?' td':'')+(p?'':' off')+'" onclick="sd('+d.getTime()+')"><b>'+n+'</b></button>'}
+g('tabs').innerHTML=wkhtml();p=plan(cd);figs=[];
+if(!p)o='<div class="note">Antes del inicio del programa ('+P0.toLocaleDateString('es-ES')+').</div>';
+else if(!p.x){o='<p class="sub"><b>'+p.t+'</b> · semana '+(p.w+1)+'</p><div class="note">'+p.r+'</div>'+(cd.getDay()==6?okb():'')}
+else{var q=p.p,x=p.x;cfg=q;var tot=Math.round((q.r*(5*q.w+4*q.s)+(q.r-1)*60)/60);
+o='<p class="sub"><b>'+p.t+'</b> · semana '+(p.w+1)+' · fase '+q.f+'</p><div class="note"><b>Músculos:</b> '+dm(x)+'<br><b>Formato:</b> '+q.r+' rondas × 5 ejercicios · '+q.w+' s trabajo / '+q.s+' s descanso · 60 s entre rondas · ~'+tot+' min</div><div class="note">Calentamiento 5 min: círculos de tobillos, rodillas, cadera y hombros (10 de cada), 30 s de equilibrio a una pierna por lado, 10 sentadillas lentas y marcha elevando rodillas.</div>';
+x.forEach(function(k,j){var id='f'+j;figs.push({id:id,k:k});o+='<div class="card">'+fig(id,k)+'<div><h3>'+(j+1)+'. '+E[k].n+'</h3><p><b>'+q.w+' s</b> · '+M[k][0]+'<br>Descanso '+q.s+' s</p><div class="tg">'+tags(k)+'</div><p>Toca para ver en grande</p></div></div>'});
+o+='<button class="btn" id="go">Empezar sesión guiada</button>'+okb()+'<div class="note"><b>Estiramientos tras la sesión</b> (40 s cada uno). La sesión guiada los incluye al final.<ol>'+sk(x).map(function(m){return '<li><b>'+S[m][0]+'</b>: '+S[m][1]+'</li>'}).join('')+'</ol></div>'}
+o+=meal(p);g('day').innerHTML=o;var go=g('go');if(go)go.onclick=start;var ok=g('ok');if(ok)ok.onclick=function(){done[ds(cd)]=!done[ds(cd)];try{localStorage.setItem('hiitdone',JSON.stringify(done))}catch(e){}render()}}
+function op(k){var m=document.getElementById('md'),q=cfg;figs.push({id:'mf',k:k});m.className='on';m.innerHTML='<div class="mc"><button class="x" onclick="cl()">✕ Cerrar</button><h2>'+E[k].n+'</h2>'+fig('mf',k)+'<div class="tg">'+tags(k)+'</div><p><b>Series:</b> '+q.r+' rondas · '+q.w+' s de trabajo ('+M[k][0]+') · '+q.s+' s de descanso</p><p>'+E[k].d+'</p></div>'}
+function beep(f,d){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state=='suspended')ac.resume();var o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.value=.3;o.start();o.stop(ac.currentTime+(d||.2))}catch(e){}}
+function say(t){try{var u=new SpeechSynthesisUtterance(t);u.lang='es-ES';speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function start(){var p=plan(cd),x=p.x,q=p.p;cfg=q;seq=[{k:x[0],w:2,l:10,r:1,j:0}];for(var r=1;r<=q.r;r++)x.forEach(function(k,j){seq.push({k:k,w:1,r:r,j:j,l:q.w});if(j<4)seq.push({k:x[j+1],w:0,r:r,j:j+1,l:q.s});else if(r<q.r)seq.push({k:x[0],w:3,r:r+1,j:0,l:60})});sk(x).forEach(function(m){seq.push({w:4,m:m,l:40})});si=0;left=seq[0].l;paused=false;document.getElementById('pause').textContent='Pausa';beep(30,.01);say('Prepárate');try{navigator.wakeLock.request('screen').then(function(l){lock=l}).catch(function(){})}catch(e){}show();clearInterval(iv);iv=setInterval(step,1000)}
+function show(){var s=seq[si],q=cfg,L=['DESCANSO','TRABAJO','PREPÁRATE','DESCANSO ENTRE RONDAS','ESTIRAMIENTOS'],g=function(i){return document.getElementById(i)};g('ov').className='on p'+s.w;g('ph').textContent=L[s.w]+(s.w==1?' · ronda '+s.r+'/'+q.r+' · ejercicio '+(s.j+1)+'/5':'');figs=figs.filter(function(f){return f.id!='bf'});
+if(s.w==4){g('nm').textContent=S[s.m][0];g('rp').textContent=S[s.m][1];g('nx').textContent='';g('big').innerHTML=''}
+else{var e=E[s.k],n=seq[si+1];g('nm').textContent=(s.w==1?'':'Siguiente: ')+e.n;g('rp').textContent=s.w==1?M[s.k][0]+' · '+M[s.k][1]:(s.w==3?'Ronda '+s.r+' de '+q.r+'. Respira y bebe agua.':'Colócate y respira');g('nx').textContent=s.w==1?(n?(n.w==3?'Luego descanso 60 s':n.w==4?'Luego estiramientos':'Luego descanso '+q.s+' s'):'¡Último ejercicio!'):'';g('big').innerHTML=fig('bf',s.k);figs.push({id:'bf',k:s.k})}
+g('tm').textContent=left;g('bb').style.width='0%'}
+function adv(){si++;if(si>=seq.length){beep(1200,.8);say('Sesión completada');end(true);return}var s=seq[si];left=s.l;beep(s.w==1?1000:450,s.w==1?.7:.3);say(s.w==1?'Ya. '+E[s.k].n:s.w==0?'Descanso':s.w==3?'Descanso largo':s.w==4?S[s.m][0]:'');show()}
+function step(){if(paused)return;left--;if(left>0&&left<=3&&seq[si].w!=4){var n=seq[si+1];beep(n&&n.w==1?900:520,.2)}if(left<=0)adv();else{document.getElementById('tm').textContent=left;document.getElementById('bb').style.width=(100-left/seq[si].l*100)+'%'}}
+function end(ok){clearInterval(iv);try{lock&&lock.release()}catch(e){}document.getElementById('ov').className='';figs=figs.filter(function(f){return f.id!='bf'});if(ok){done[ds(cd)]=true;try{localStorage.setItem('hiitdone',JSON.stringify(done))}catch(e){}}render()}
+(function(){try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d'),g=x.createLinearGradient(0,0,0,180);g.addColorStop(0,'#ff8a3d');g.addColorStop(1,'#d9480f');x.fillStyle=g;x.fillRect(0,0,180,180);x.fillStyle='#fff';x.beginPath();x.ellipse(90,57.2,33.8,30.8,0,0,7);x.fill();x.beginPath();x.arc(90,108.2,43.9,0,7);x.fill();x.fillStyle=g;x.beginPath();x.ellipse(90,58,19.7,17.6,0,0,7);x.fill();x.fillStyle='#e8590c';x.beginPath();x.moveTo(99.3,77.3);x.lineTo(75.6,110.8);x.lineTo(88.8,110.8);x.lineTo(81.7,138.9);x.lineTo(108.1,99.3);x.lineTo(94.1,99.3);x.fill();var l=document.createElement('link');l.rel='apple-touch-icon';l.href=c.toDataURL('image/png');document.head.appendChild(l)}catch(e){}})();
+render();requestAnimationFrame(tick);
+</script>
+</body>
+</html>
