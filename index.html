@@ -3,13 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-180.png">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>HIIT en casa</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="HIIT">
 <meta name="theme-color" content="#e8590c">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root{box-sizing:border-box;--bg:#f6f5f1;--card:#fff;--tx:#1b1b1b;--mu:#6b6b66;--ac:#e8590c;--ln:#e3e1da;--fig:#1b1b1b;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1d1d1d;--tx:#f2f2ee;--mu:#9a9a94;--ln:#2e2e2b;--fig:#f2f2ee}}
@@ -47,6 +45,7 @@ h1{font-size:22px;margin:4px 0 12px}
 .tab.done{background:#2f9e44;border-color:#2f9e44;color:#fff}.tab.done b{color:#fff}.tab.on.done{outline:3px solid var(--ac);outline-offset:-3px}.wk{flex:none;min-width:68px}#ov.p0,#ov.p3{background:#1971c2;color:#fff}#ov.p2{background:#2f9e44;color:#fff}
 #ov #ph,#ov #nx,#ov #rp{color:#fff}#rp{font-size:14px;opacity:.9;margin-bottom:4px}
 #bw{width:min(80vw,300px);height:8px;background:rgba(255,255,255,.3);border-radius:9px;margin:6px 0 10px;overflow:hidden}#bb{height:100%;background:#fff;width:0}
+.card canvas{width:110px;height:110px;flex:none;background:var(--bg);border-radius:12px}.mc canvas{width:100%;max-width:420px;height:auto;aspect-ratio:1;display:block;margin:8px auto;background:var(--card);border-radius:20px}#ov canvas{width:min(70vw,300px);height:min(70vw,300px);background:var(--card);border-radius:20px}
 </style>
 </head>
 <body>
@@ -55,7 +54,7 @@ h1{font-size:22px;margin:4px 0 12px}
 <div id="day"></div>
 <div id="md"></div>
 <div id="ov">
-<div id="ph"></div><div id="tm"></div><div id="bw"><div id="bb"></div></div><div id="nm"></div><div id="rp"></div><div id="nx"></div>
+<div id="ph"></div><div id="tm"></div><div id="bw"><div id="bb"></div></div><div id="nm"></div><div id="rp"></div><div id="nx"></div><a id="vd" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;margin:6px 0 10px;display:none">▶ Ver cómo se hace (pausa antes)</a>
 <div id="big"></div>
 <button class="btn alt" id="pause">Pausa</button>
 <button class="btn alt" id="skip">Saltar</button>
@@ -185,7 +184,7 @@ if(!p)o='<div class="note">Antes del inicio del programa ('+P0.toLocaleDateStrin
 else if(!p.x){o='<p class="sub"><b>'+p.t+'</b> · semana '+(p.w+1)+'</p><div class="note">'+p.r+'</div>'+(cd.getDay()==6?okb():'')}
 else{var q=p.p,x=p.x;cfg=q;var tot=Math.round((q.r*(5*q.w+4*q.s)+(q.r-1)*60)/60);
 o='<p class="sub"><b>'+p.t+'</b> · semana '+(p.w+1)+' · fase '+q.f+'</p><div class="note"><b>Músculos:</b> '+dm(x)+'<br><b>Formato:</b> '+q.r+' rondas × 5 ejercicios · '+q.w+' s trabajo / '+q.s+' s descanso · 60 s entre rondas · ~'+tot+' min</div><div class="note">Calentamiento 5 min: círculos de tobillos, rodillas, cadera y hombros (10 de cada), 30 s de equilibrio a una pierna por lado, 10 sentadillas lentas y marcha elevando rodillas.</div>';
-x.forEach(function(k,j){var id='f'+j;figs.push({id:id,k:k});o+='<div class="card">'+fig(id,k)+'<div><h3>'+(j+1)+'. '+E[k].n+'</h3><p><b>'+q.w+' s</b> · '+M[k][0]+'<br>Descanso '+q.s+' s</p><div class="tg">'+tags(k)+'</div><p>Toca para ver en grande</p></div></div>'});
+x.forEach(function(k,j){var id='f'+j;figs.push({id:id,k:k});o+='<div class="card">'+fig(id,k)+'<div><h3>'+(j+1)+'. '+E[k].n+'</h3><p><b>'+q.w+' s</b> · '+M[k][0]+'<br>Descanso '+q.s+' s</p><div class="tg">'+tags(k)+'</div><p>Toca para ver en grande · <a href="'+vl(k)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="color:var(--ac);font-weight:600">▶ Vídeo</a></p></div></div>'});
 o+='<button class="btn" id="go">Empezar sesión guiada</button>'+okb()+'<div class="note"><b>Estiramientos tras la sesión</b> (40 s cada uno). La sesión guiada los incluye al final.<ol>'+sk(x).map(function(m){return '<li><b>'+S[m][0]+'</b>: '+S[m][1]+'</li>'}).join('')+'</ol></div>'}
 o+=meal(p);g('day').innerHTML=o;var go=g('go');if(go)go.onclick=start;var ok=g('ok');if(ok)ok.onclick=function(){done[ds(cd)]=!done[ds(cd)];try{localStorage.setItem('hiitdone',JSON.stringify(done))}catch(e){}render()}}
 function op(k){var m=document.getElementById('md'),q=cfg;figs.push({id:'mf',k:k});m.className='on';m.innerHTML='<div class="mc"><button class="x" onclick="cl()">✕ Cerrar</button><h2>'+E[k].n+'</h2>'+fig('mf',k)+'<div class="tg">'+tags(k)+'</div><p><b>Series:</b> '+q.r+' rondas · '+q.w+' s de trabajo ('+M[k][0]+') · '+q.s+' s de descanso</p><p>'+E[k].d+'</p></div>'}
@@ -195,7 +194,7 @@ function start(){var p=plan(cd),x=p.x,q=p.p;cfg=q;seq=[{k:x[0],w:2,l:10,r:1,j:0}
 function show(){var s=seq[si],q=cfg,L=['DESCANSO','TRABAJO','PREPÁRATE','DESCANSO ENTRE RONDAS','ESTIRAMIENTOS'],g=function(i){return document.getElementById(i)};g('ov').className='on p'+s.w;g('ph').textContent=L[s.w]+(s.w==1?' · ronda '+s.r+'/'+q.r+' · ejercicio '+(s.j+1)+'/5':'');figs=figs.filter(function(f){return f.id!='bf'});
 if(s.w==4){g('nm').textContent=S[s.m][0];g('rp').textContent=S[s.m][1];g('nx').textContent='';g('big').innerHTML=''}
 else{var e=E[s.k],n=seq[si+1];g('nm').textContent=(s.w==1?'':'Siguiente: ')+e.n;g('rp').textContent=s.w==1?M[s.k][0]+' · '+M[s.k][1]:(s.w==3?'Ronda '+s.r+' de '+q.r+'. Respira y bebe agua.':'Colócate y respira');g('nx').textContent=s.w==1?(n?(n.w==3?'Luego descanso 60 s':n.w==4?'Luego estiramientos':'Luego descanso '+q.s+' s'):'¡Último ejercicio!'):'';g('big').innerHTML=fig('bf',s.k);figs.push({id:'bf',k:s.k})}
-g('tm').textContent=left;g('bb').style.width='0%'}
+g('tm').textContent=left;g('bb').style.width='0%';var vd=g('vd');if(s.w==4||!s.k){vd.style.display='none'}else{vd.style.display='inline-block';vd.href=vl(s.k)}}
 function adv(){si++;if(si>=seq.length){beep(1200,.8);say('Sesión completada');end(true);return}var s=seq[si];left=s.l;beep(s.w==1?1000:450,s.w==1?.7:.3);say(s.w==1?'Ya. '+E[s.k].n:s.w==0?'Descanso':s.w==3?'Descanso largo':s.w==4?S[s.m][0]:'');show()}
 function step(){if(paused)return;left--;if(left>0&&left<=3&&seq[si].w!=4){var n=seq[si+1];beep(n&&n.w==1?900:520,.2)}if(left<=0)adv();else{document.getElementById('tm').textContent=left;document.getElementById('bb').style.width=(100-left/seq[si].l*100)+'%'}}
 function end(ok){clearInterval(iv);try{lock&&lock.release()}catch(e){}document.getElementById('ov').className='';figs=figs.filter(function(f){return f.id!='bf'});if(ok){done[ds(cd)]=true;try{localStorage.setItem('hiitdone',JSON.stringify(done))}catch(e){}}render()}
@@ -217,6 +216,75 @@ E.altos={n:'Rodillas altas',d:'En el sitio, sube las rodillas alternas a la altu
 E.bici={n:'Bicicleta abdominal',d:'Tumbado boca arriba con las manos tras la cabeza. Lleva un codo hacia la rodilla contraria mientras estiras la otra pierna, y alterna sin tirar del cuello.',A:[12,86,22,86,42,86,58,66,68,76,62,84,82,86,14,74,12,82],B:[12,86,22,86,42,86,62,84,82,86,58,66,68,76,14,74,12,82]};
 M.sumo=['10-12 reps','Cuádriceps, Glúteos, Isquiotibiales, Core'];M.buenos=['12 reps lentas','Isquiotibiales, Glúteos, Zona lumbar'];M.superman=['12 reps, aguanta 2 s arriba','Zona lumbar, Glúteos, Hombros'];M.altos=['30-40 reps (cada rodilla cuenta)','Cuádriceps, Flexores de cadera, Core'];M.bici=['20-30 reps (cada lado)','Core, Flexores de cadera'];
 T={A1:['swing','goblet','stepup','rdl1','climbers'],A2:['goblet','J','zancada','rdl1','gemelos'],A3:['sumo','swing','stepup','zancada','altos'],A4:['goblet','J','rdl1','buenos','climbers'],B1:['flexiones','remo','press','puente','plancha'],B2:['press','flexiones','remo','curl','plancha'],B3:['remo','flexiones','curl','superman','bici'],B4:['press','remo','flexiones','plancha','superman'],C1:['swing','stepup','flexiones','remo','plancha'],C2:['goblet','rdl1','press','zancada','climbers'],C3:['sumo','remo','flexiones','altos','bici'],C4:['swing','zancada','press','buenos','plancha']};
+function vl(k){return 'https://www.youtube.com/results?search_query='+encodeURIComponent(E[k].n+' cómo hacerlo bien técnica')}
+C.shd='#c44a08';var OA=['curl','press','remo','rdl1'];
+function fig(id,k){var e=E[k],gs=' stroke="var(--mu)" stroke-opacity=".3" stroke-width="2.4" stroke-linecap="round" fill="none"/>',oa=OA.indexOf(k)>=0;return '<svg viewBox="0 -12 100 110" id="'+id+'"><line x1="0" y1="92" x2="100" y2="92" stroke="var(--ln)" stroke-width="2"/>'+(e.bx?'<rect x="56" y="74" width="32" height="18" rx="2" fill="var(--ln)"/>':'')+'<path d="'+gp(e.A)+'"'+gs+'<path d="'+gp(e.B)+'"'+gs+(oa?'':pa('fua',C.shd,7.5)+pa('ffa',C.skd,6)+ci('fhd',3.4,C.skd))+pa('fl1',C.sod,11)+pa('fl2',C.skd,7.5)+ci('cf2',4.4,C.skd)+pa('ff',C.shoe,5.5)+'<path class="tr" fill="'+C.sh+'" stroke="'+C.sh+'" stroke-width="3" stroke-linejoin="round"/>'+ci('sc',8,C.sh)+ci('hp',7,C.so)+pa('nl1',C.so,11)+pa('nl2',C.sk,7.5)+ci('cf1',4.4,C.sk)+pa('nf',C.shoe,5.5)+pa('nk',C.sk,5)+ci('hr',7.5,C.hr)+ci('fc',6.2,C.sk)+ci('ea',1.5,C.skd)+ci('ey',.9,'#1e1e1e')+ci('ns',1.3,C.sk)+pa('ua',C.sh,8)+ci('dl',5,C.sh)+pa('fa',C.sk,6.5)+ci('hd',3.6,C.sk)+'<g class="kb" display="none"><path d="M-4 4Q-4 -6 0 -6Q4 -6 4 4" stroke="#333" stroke-width="2.5" fill="none"/><circle cy="6" r="6.5" fill="#333"/><circle cx="-2" cy="4" r="1.6" fill="#6e6e6e"/></g></svg>'}
+function draw(svg,k,t){var e=E[k],p=[],i,g=function(c){return svg.querySelector('.'+c)},ln=function(c,a,b,x,y){g(c).setAttribute('d','M'+a+' '+b+'L'+x+' '+y)},cc=function(c,x,y){g(c).setAttribute('cx',x);g(c).setAttribute('cy',y)},ft=function(c,kx,ky,fx,fy){g(c).setAttribute('d',Math.abs(fx-kx)<Math.abs(fy-ky)&&fy>ky?'M'+fx+' '+fy+'L'+(fx+7)+' '+fy:'')},cf=function(c,kx,ky,fx,fy){var dx=fx-kx,dy=fy-ky,n=Math.hypot(dx,dy)||1,px=-dy/n,py=dx/n;if(px>.05||(Math.abs(px)<=.05&&py>0)){px=-px;py=-py}cc(c,kx+dx*.32+px*1.8,ky+dy*.32+py*1.8)};
+for(i=0;i<18;i++)p.push(e.A[i]+(e.B[i]-e.A[i])*t);
+if(g('fua')){ln('fua',p[2]-2.5,p[3],p[14]-2.5,p[15]);ln('ffa',p[14]-2.5,p[15],p[16]-2.5,p[17]);cc('fhd',p[16]-2.5,p[17])}
+ln('fl1',p[4],p[5],p[10],p[11]);ln('fl2',p[10],p[11],p[12],p[13]);cf('cf2',p[10],p[11],p[12],p[13]);ft('ff',p[10],p[11],p[12],p[13]);
+var dx=p[4]-p[2],dy=p[5]-p[3],n=Math.hypot(dx,dy)||1,nx=-dy/n,ny=dx/n;g('tr').setAttribute('d','M'+(p[2]+nx*8)+' '+(p[3]+ny*8)+'L'+(p[2]-nx*8)+' '+(p[3]-ny*8)+'L'+(p[4]-nx*6.5)+' '+(p[5]-ny*6.5)+'L'+(p[4]+nx*6.5)+' '+(p[5]+ny*6.5)+'Z');cc('sc',p[2],p[3]);cc('hp',p[4],p[5]);
+ln('nl1',p[4],p[5],p[6],p[7]);ln('nl2',p[6],p[7],p[8],p[9]);cf('cf1',p[6],p[7],p[8],p[9]);ft('nf',p[6],p[7],p[8],p[9]);
+ln('nk',p[2],p[3],p[0],p[1]);cc('hr',p[0],p[1]);cc('fc',p[0]+1.8,p[1]+1.2);cc('ea',p[0]-.6,p[1]+.8);cc('ey',p[0]+3.4,p[1]-.4);cc('ns',p[0]+6.6,p[1]+1.2);
+ln('ua',p[2],p[3],p[14],p[15]);cc('dl',p[2],p[3]);ln('fa',p[14],p[15],p[16],p[17]);cc('hd',p[16],p[17]);var b=g('kb');b.setAttribute('display',e.kb?'':'none');b.setAttribute('transform','translate('+p[16]+' '+p[17]+')')}
+E.pajaro={n:'Pájaro inclinado',d:'Inclinado hacia delante con la espalda recta y los brazos colgando. Sube los brazos hacia los lados hasta la altura de los hombros, sin pasar de ahí, y baja lento. Sin peso o con botellas pequeñas de agua. Es de los más amables con el manguito rotador.',A:[68,34,60,38,36,52,42,70,44,90,42,70,44,90,60,54,60,70],B:[68,34,60,38,36,52,42,70,44,90,42,70,44,90,61,40,62,42]};
+M.pajaro=['12-15 reps lentas, sin peso o con botellas pequeñas','Hombros, Dorsal, Zona lumbar'];
+E.superman.A=[74,82,66,84,40,84,26,86,12,88,26,86,12,88,56,85,46,85];E.superman.B=[74,76,66,80,40,84,26,80,12,74,26,80,12,74,56,80,46,78];E.superman.d='Boca abajo con los brazos pegados al cuerpo, sin subirlos por encima de la cabeza. Eleva pecho y piernas, aguanta 2 s apretando glúteos y espalda baja, y baja controlado.';
+E.buenos.A=[50,14,50,24,50,50,50,70,50,90,50,70,50,90,56,34,48,28];E.buenos.B=[68,34,60,38,36,52,42,70,44,90,42,70,44,90,66,48,58,44];E.buenos.d='Brazos cruzados sobre el pecho y rodillas ligeramente flexionadas. Lleva la cadera atrás e inclina el torso con la espalda recta hasta notar los isquios, y sube apretando los glúteos.';
+E.salto.A=[50,0,50,10,50,36,50,58,50,76,50,58,50,76,56,18,64,22];
+T={A1:['swing','goblet','stepup','rdl1','climbers'],A2:['goblet','J','zancada','rdl1','gemelos'],A3:['sumo','swing','stepup','zancada','altos'],A4:['goblet','J','rdl1','buenos','climbers'],B1:['flexiones','remo','pajaro','puente','plancha'],B2:['pajaro','flexiones','remo','curl','plancha'],B3:['remo','flexiones','curl','superman','bici'],B4:['pajaro','remo','flexiones','plancha','superman'],C1:['swing','stepup','flexiones','remo','plancha'],C2:['goblet','rdl1','pajaro','zancada','climbers'],C3:['sumo','remo','flexiones','altos','bici'],C4:['swing','zancada','pajaro','buenos','plancha']};
+var svgFig=fig,svgDraw=draw,op0=op;
+var R3,S3,CA3,P3,MT;
+function in3(){
+ if(R3!==undefined)return !!R3;
+ try{
+  var T=THREE;
+  R3=new T.WebGLRenderer({alpha:true,antialias:true});R3.setPixelRatio(1);R3.setSize(400,400,false);
+  S3=new T.Scene();CA3=new T.PerspectiveCamera(32,1,.1,100);
+  S3.add(new T.AmbientLight(0xffffff,.85));var dl=new T.DirectionalLight(0xffffff,.65);dl.position.set(6,10,9);S3.add(dl);
+  var M=function(c){return new T.MeshLambertMaterial({color:c})};
+  MT={sk:M(0xe0ac8a),skd:M(0xc99874),sh:M(0xe8590c),shd:M(0xc44a08),so:M(0x34495e),sod:M(0x26384a),hr:M(0x3b2a20),shoe:M(0xe6e6e6),kb:M(0x333333),box:M(0xb9b6ac)};
+  P3={};
+  var cy=function(n,m,rs,re){var x=new T.Mesh(new T.CylinderGeometry(re,rs,1,14),m);S3.add(x);P3[n]=x},
+  sp=function(n,m,r,sx,sy,sz){var x=new T.Mesh(new T.SphereGeometry(r,16,12),m);x.scale.set(sx||1,sy||1,sz||1);S3.add(x);P3[n]=x};
+  cy('t1',MT.so,.3,.23);cy('t2',MT.sod,.3,.23);cy('s1',MT.sk,.21,.15);cy('s2',MT.skd,.21,.15);
+  sp('k1',MT.sk,.22);sp('k2',MT.skd,.22);sp('h1',MT.so,.34);sp('h2',MT.sod,.34);
+  sp('f1',MT.shoe,.2,2.2,.8,1.1);sp('f2',MT.shoe,.2,2.2,.8,1.1);
+  cy('tor',MT.sh,.5,.62);sp('pel',MT.so,.52,1,.7,1.45);sp('s1j',MT.sh,.3);sp('s2j',MT.shd,.3);
+  cy('nk',MT.sk,.17,.15);sp('hd',MT.sk,.42);sp('hr',MT.hr,.44);sp('ns',MT.sk,.08);
+  cy('u1',MT.sh,.17,.16);cy('u2',MT.shd,.17,.16);cy('a1',MT.sk,.14,.12);cy('a2',MT.skd,.14,.12);
+  sp('e1',MT.sk,.15);sp('e2',MT.skd,.15);sp('w1',MT.sk,.17);sp('w2',MT.skd,.17);
+  sp('kbb',MT.kb,.46);var th=new T.Mesh(new T.TorusGeometry(.28,.06,8,16),MT.kb);S3.add(th);P3.kbh=th;
+  var bx=new T.Mesh(new T.BoxGeometry(3.2,1.8,2.4),MT.box);bx.position.set(2.2,.9,0);S3.add(bx);P3.bx=bx;
+  var gr=new T.Mesh(new T.CircleGeometry(6.5,40),new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.07}));gr.rotation.x=-Math.PI/2;gr.position.y=-.02;S3.add(gr);
+ }catch(e){R3=false}
+ return !!R3}
+function sg(m,a,b,sz){var T=THREE,d=new T.Vector3().subVectors(b,a),l=d.length();if(l<1e-4){d.set(0,1,0);l=.001}m.position.set((a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2);m.scale.set(1,l,sz||1);m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize())}
+function draw3(el,k,t){
+ if(!in3())return;var now=performance.now();if(now-(el._l||0)<33)return;el._l=now;
+ var T=THREE,e=E[k],p=[],i,oa=OA.indexOf(k)>=0,V=function(x,y,z){return new T.Vector3((x-50)*.1,(92-y)*.1,z)};
+ for(i=0;i<18;i++)p.push(e.A[i]+(e.B[i]-e.A[i])*t);
+ var H=V(p[0],p[1],0),S=V(p[2],p[3],0),Pp=V(p[4],p[5],0),hn=V(p[4],p[5],.42),hf=V(p[4],p[5],-.42),kn=V(p[6],p[7],.42),fn=V(p[8],p[9],.42),kf=V(p[10],p[11],-.42),ff=V(p[12],p[13],-.42);
+ sg(P3.t1,hn,kn);sg(P3.s1,kn,fn);sg(P3.t2,hf,kf);sg(P3.s2,kf,ff);
+ P3.k1.position.copy(kn);P3.k2.position.copy(kf);P3.h1.position.copy(hn);P3.h2.position.copy(hf);
+ var ft=function(m,kk,f,z){var up=Math.abs(f.x-kk.x)<Math.abs(f.y-kk.y)&&f.y<kk.y;m.position.set(f.x+(up?.22:0),f.y+(up?.1:.02),z)};
+ ft(P3.f1,kn,fn,.42);ft(P3.f2,kf,ff,-.42);
+ sg(P3.tor,Pp,S,1.5);P3.pel.position.copy(Pp);
+ var sn=V(p[2],p[3],.8),sf=V(p[2],p[3],-.8);P3.s1j.position.copy(sn);P3.s2j.position.copy(sf);
+ sg(P3.nk,S,H);P3.hd.position.copy(H);P3.hr.position.set(H.x-.07,H.y+.1,0);P3.ns.position.set(H.x+.42,H.y-.02,0);
+ var hz=oa?.8:(e.kb?.28:(p[17]>84?.8:.55)),en=V(p[14],p[15],oa?.8:.75),an=V(p[16],p[17],hz),ef,af;
+ if(oa){ef=new T.Vector3(sf.x,sf.y-1.4,-.8);af=new T.Vector3(sf.x,sf.y-2.6,-.8)}else{ef=V(p[14],p[15],-.75);af=V(p[16],p[17],-hz)}
+ if(k=='pajaro'){var q=t*Math.PI/2,cq=Math.cos(q),sq=Math.sin(q);en=new T.Vector3(S.x,S.y-1.6*cq,.8+1.6*sq);an=new T.Vector3(S.x,S.y-3.2*cq,.8+3.2*sq);ef=new T.Vector3(S.x,S.y-1.6*cq,-en.z);af=new T.Vector3(S.x,S.y-3.2*cq,-an.z)}
+ sg(P3.u1,sn,en);sg(P3.a1,en,an);sg(P3.u2,sf,ef);sg(P3.a2,ef,af);
+ P3.e1.position.copy(en);P3.e2.position.copy(ef);P3.w1.position.copy(an);P3.w2.position.copy(af);
+ var kz=oa?.8:0;P3.kbb.visible=P3.kbh.visible=!!e.kb;P3.kbb.position.set(an.x,an.y-.5,kz);P3.kbh.position.set(an.x,an.y-.05,kz);P3.bx.visible=!!e.bx;
+ var az=el._az==null?.6:el._az,R=18;
+ CA3.position.set(.3+R*Math.sin(az),5.2,R*Math.cos(az));CA3.lookAt(new T.Vector3(.3,4.6,0));
+ R3.render(S3,CA3);var c=el.getContext('2d');c.clearRect(0,0,el.width,el.height);c.drawImage(R3.domElement,0,0,el.width,el.height)}
+fig=function(id,k){return in3()?'<canvas id="'+id+'" width="400" height="400"></canvas>':svgFig(id,k)};
+draw=function(el,k,t){if(el.tagName=='CANVAS')draw3(el,k,t);else svgDraw(el,k,t)};
+op=function(k){op0(k);var c=document.getElementById('mf');if(c&&c.tagName=='CANVAS'){c.style.touchAction='none';var x0=null;c.onpointerdown=function(ev){x0=ev.clientX;try{c.setPointerCapture(ev.pointerId)}catch(e){}};c.onpointermove=function(ev){if(x0!=null){c._az=(c._az==null?.6:c._az)+(ev.clientX-x0)*.012;x0=ev.clientX}};c.onpointerup=function(){x0=null};if(c.nextElementSibling)c.nextElementSibling.textContent='Arrastra la figura con el dedo para girarla'}};
+
 render();requestAnimationFrame(tick);
 </script>
 </body>
